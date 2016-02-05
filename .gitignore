@@ -1,0 +1,34 @@
+
+*.log
+*.pid
+*.seed
+.AppleDB
+.AppleDesktop
+.AppleDouble
+.DS_Store
+.DS_Store*
+.DocumentRevisions-V100
+.LSOverride
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+._*
+.apdisk
+.fseventsd
+.grunt
+.hubot_history
+.lock-wscript
+.node_repl_history
+.npm
+Icon
+Network Trash Folder
+Temporary Items
+build/Release
+coverage
+lib-cov
+logs
+node_modules
+npm-debug.log*
+pids
+.env
