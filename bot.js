@@ -10,16 +10,17 @@ const lexicon = [];
   });
 }
 
+const help = "Hi, I'm the Lexicon, here's [what I can do](http://wiki.esoui.com/Lexicon).";
+
 const parse = function parse(message, reply) {
   if (!message || !message.text) return;
-
-  let [ prefix,,,input ] = message.text.match(/^lex(icon)?(\s(.+)|\s$|$)/) || [];
-  if (!prefix) return;
-  if (!input) input = 'help';
+  if (message.text.match(/^((lex(icon)?)( h[ea]lp)?|h[ea]lp)\s?$/)) return reply(help);
+  let [ ,,text ] = message.text.match(/^lex(icon)?\s(.+)/) || [];
+  if (!text) return;
 
   lexicon.forEach(function(entry) {
     if (!entry.pattern) return true;
-    const match = input.match(new RegExp('^' + entry.pattern, 'i'));
+    const match = text.match(new RegExp('^' + entry.pattern, 'i'));
     if (match) entry.reply(message, match, reply);
   });
 };
