@@ -13,10 +13,12 @@ const lexicon = [];
 const parse = function parse(message, reply) {
   if (!message || !message.text) return;
 
-  const [ ,,input ] = message.text.match(/^lex(icon)?\s(.+)/) || [];
-  if (input === undefined) return;
+  let [ prefix,,,input ] = message.text.match(/^lex(icon)?(\s(.+)|\s$|$)/) || [];
+  if (!prefix) return;
+  if (!input) input = 'help';
 
   lexicon.forEach(function(entry) {
+    if (!entry.pattern) return true;
     const match = input.match(new RegExp('^' + entry.pattern, 'i'));
     if (match) entry.reply(message, match, reply);
   });
