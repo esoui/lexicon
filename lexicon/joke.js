@@ -44,7 +44,7 @@ const jokes = [
 ];
 
 module.exports = {
-  pattern: /(tell me a )?joke/,
+  pattern: '(tell me a )?joke',
   reply: function(message, match, reply) {
     const i = Math.floor(Math.random() * jokes.length);
     reply(jokes[i]);

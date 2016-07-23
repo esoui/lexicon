@@ -1,7 +1,7 @@
 const querystring = require('querystring');
 
 module.exports = {
-  pattern: /(search for )?add-?ons? (with |named )?(.+)/,
+  pattern: '(search for )?add-?ons? (with |named )?(.+)',
   reply: function(message, match, reply) {
     const params = {
       search: match[3],

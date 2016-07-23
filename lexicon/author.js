@@ -1,7 +1,7 @@
 const querystring = require('querystring');
 
 module.exports = {
-  pattern: /(search (for )?)?authors? (named )?(.+)/,
+  pattern: '(search (for )?)?authors? (named )?(.+)',
   reply: function(message, match, reply) {
     const params = {
       search: match[4],

@@ -1,7 +1,7 @@
 const querystring = require('querystring');
 
 module.exports = {
-  pattern: /(search (in )?)?(code|source|repo(sitory)?) (for )?(.+)/,
+  pattern: '(search (in )?)?(code|source|repo(sitory)?) (for )?(.+)',
   reply: function(message, match, reply) {
     const params = {
       q: match[6],

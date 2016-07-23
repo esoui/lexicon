@@ -1,7 +1,7 @@
 const querystring = require('querystring');
 
 module.exports = {
-  pattern: /(search )?wiki (for )?(.+)/,
+  pattern: '(search )?wiki (for )?(.+)',
   reply: function(message, match, reply) {
     const params = {
       search: match[3],

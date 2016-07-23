@@ -1,7 +1,7 @@
 const querystring = require('querystring');
 
 module.exports = {
-  pattern: /(search (in )?)?forums? (for )?(.+)/,
+  pattern: '(search (in )?)?forums? (for )?(.+)',
   reply: function(message, match, reply) {
     const params = {
       q: `${match[4]} site:http://www.esoui.com/forums`,

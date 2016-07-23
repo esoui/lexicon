@@ -11,16 +11,13 @@ const lexicon = [];
 }
 
 const parse = function parse(message, reply) {
-  console.log('message', message);
-
   if (!message || !message.text) return;
-  const [ ,,input ] = message.text.match(/^lex(icon)?\s(.+)/) || [];
-  if (!input) return;
 
-  console.log('input', input);
+  const [ ,,input ] = message.text.match(/^lex(icon)?\s(.+)/) || [];
+  if (input === undefined) return;
 
   lexicon.forEach(function(entry) {
-    const match = input.match(entry.pattern);
+    const match = input.match(new RegExp(entry.pattern, 'i'));
     if (match) entry.reply(message, match, reply);
   });
 };
