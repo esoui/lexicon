@@ -4,9 +4,10 @@ module.exports = {
   pattern: '(search (in )?)?forums? (for )?(.+)',
   reply: function(message, match, reply) {
     const params = {
-      q: `${match[4]} site:http://www.esoui.com/forums`,
+      query: match[4],
+      do: 'process'
     };
-    const uri = `https://www.google.com/?${querystring.stringify(params)}`;
+    const uri = `http://www.esoui.com/forums/search.php?${querystring.stringify(params)}`;
     reply(`See [forum results for "${match[4]}"](${uri})`);
   }
 };
