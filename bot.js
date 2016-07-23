@@ -17,7 +17,7 @@ const parse = function parse(message, reply) {
   if (input === undefined) return;
 
   lexicon.forEach(function(entry) {
-    const match = input.match(new RegExp(entry.pattern, 'i'));
+    const match = input.match(new RegExp('^' + entry.pattern, 'i'));
     if (match) entry.reply(message, match, reply);
   });
 };
