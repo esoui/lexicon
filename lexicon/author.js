@@ -1,13 +1,13 @@
 const querystring = require('querystring');
 
 module.exports = {
-  pattern: '(search (for )?)?authors? (named )?(.+)',
+  pattern: '(search (for )?)?(author|user)s? (named )?(.+)',
   reply: function(message, match, reply) {
     const params = {
-      search: match[4],
-      author: '',
+      ausername: match[5],
+      do: 'getall',
     };
-    const uri = `http://www.esoui.com/downloads/search.php?${querystring.stringify(params)}`;
-    reply(`See [author results for "${match[4]}"](${uri})`);
+    const uri = `http://www.esoui.com/forums/memberlist.php?${querystring.stringify(params)}`;
+    reply(`See [author results for "${match[5]}"](${uri})`);
   }
 };
