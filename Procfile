@@ -1,1 +1,1 @@
-web: bin/hubot -a gitter
+web: npm start

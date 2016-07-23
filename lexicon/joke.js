@@ -1,4 +1,4 @@
-var jokes = [
+const jokes = [
   "\"How is your wife,\" asked Zalither. \"She's in bed with laryngitis,\" replied Harlyth. \"Is that Argonian bastard back in town again?\"",
   "\"I keep seeing spots before my eyes.\" \"Have you seen a healer?\" \"No, just spots.\"",
   "A big Nord named Julgen was set on by a gang of thieves. He fought them furiously, but in the end, they beat him into semiconsciousness. They searched his pockets and discovered that he only had three gold pieces on him. \"Do you mean to tell us you fought us like a mad lupe for three lousy gold pieces?\" sneered one of the thieves. \"No,\" answered Julgen. \"I was afraid you were after the four hundred gold pieces in my boot.\"",
@@ -37,11 +37,16 @@ var jokes = [
   "What's the best way to convince even the most pompous Altmer that you have a good point? Stab them in the chest with it.",
   "What do you wear to dinner in Vallenwood? Barbeque Sauce.",
   "An Altmer, a Nord and an Imperial were passengers on a boat. The weather got real bad, it was Clear the boat was in big trouble. \"We're overloaded!\" the captain shouted. \"There's only one solution: One of you must jump overboard!\" \"I do this for the Aldmeri Dominion!\" the Altmer shouted, and threw himself overboard. It helped for a while, but then the captain informed that the boat was still overloaded, there was nothing else to do, one more passenger needed to jump. \"I do this for Skyrim!\" the Nord shouted, and threw the Imperial overboard.",
-  "A group of three Nords are exploring Valenwood when they are captured by some Bosmer. They are brought before the King, who tells them they are to be cooked and eaten for an upcoming feast. The men are tied up and lowered into a giant pot of water. Two of the Nords start screaming and shouting, but the third starts laughing hysterically. His friends ask him, \"What is so funny? We're about to be boiled alive, you know!\". The laughing Nord grins and says, \"I just crapped in their soup!\"".
+  "A group of three Nords are exploring Valenwood when they are captured by some Bosmer. They are brought before the King, who tells them they are to be cooked and eaten for an upcoming feast. The men are tied up and lowered into a giant pot of water. Two of the Nords start screaming and shouting, but the third starts laughing hysterically. His friends ask him, \"What is so funny? We're about to be boiled alive, you know!\". The laughing Nord grins and says, \"I just crapped in their soup!\"",
   "Why do Khajiit lick their butts? To get the taste of Khajiit cooking out of their mouths!",
   "A Nord was standing in the woods, wondering why an arrow seemed to be getting bigger and bigger. And then it hit him.",
   "Two Bosmer try chicken for the first time. Says the one: \"Tastes like human.\""
 ];
 
-var uniqueRandomArray = require('unique-random-array');
-module.exports = uniqueRandomArray(jokes);
+module.exports = {
+  pattern: /(tell me a )?joke/,
+  reply: function(message, match, reply) {
+    const i = Math.floor(Math.random() * jokes.length);
+    reply(jokes[i]);
+  }
+};
