@@ -1,6 +1,22 @@
 module.exports = {
   pattern: 'help',
   reply: function(message, match, reply) {
-    reply("Here's what you can ask me: \n- search add-ons ...\n- search author ...\n- search in forums ...\n- search wiki for ...\n- search source for ...\n- search lua for ...\n- live version\n- pts version\n- joke\n- create meme ... ...; ...\n- memes\n- help");
+    const help = `
+      Here's what you can ask me:
+      - [search ]add-ons \`query\`
+      - [search ]authors \`name\`
+      - [search ]forums for \`query\`
+      - [search ]wiki for \`query\`
+      - [search ]source for \`query\`
+      - [search ]lua for \`query\`
+      - live version
+      - pts version
+      - joke
+      - [create ]meme \`template\`; \`top line\`; \`bottom line\`
+      - memes[ templates]
+      - help
+    `;
+
+    reply(help.replace(/^\s+|\s+$/, '').replace(/\s+\n/, "\n"));
   }
 };
