@@ -3,9 +3,9 @@ const querystring = require('querystring');
 const bot = require('./bot');
 const heartbeat = " \n";
 
-function reply(to, message) {
+function send(message) {
   const payload = querystring.stringify({
-    text: `@${to} ${message}`
+    text: message
   });
 
   const options = {
@@ -34,6 +34,10 @@ function reply(to, message) {
   request.write(payload);
 
   request.end();
+}
+
+function reply(to, message) {
+  send(`@${to} ${message}`);
 }
 
 function listen() {
