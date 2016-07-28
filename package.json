@@ -21,6 +21,7 @@
     "babel-cli": "^6.11.4",
     "babel-preset-es2015": "^6.9.0",
     "halley": "^0.4.7",
+    "mixpanel": "^0.4.0",
     "nodemon": "^1.10.0",
     "querystring": "^0.2.0"
   },

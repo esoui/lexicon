@@ -1,5 +1,8 @@
+import Mixpanel from 'mixpanel';
 import path from 'path';
 import fs from 'fs';
+
+const mixpanel = Mixpanel.init(process.env.MIXPANEL_TOKEN);
 
 const commands = [];
 {
@@ -23,7 +26,12 @@ export function parse(message, reply) {
   commands.forEach(function(command) {
     if (!command.pattern) return true;
     const match = text.match(new RegExp('^' + command.pattern, 'i'));
-    if (match) command.reply(message, match, reply);
+    if (match) {
+      mixpanel.track('interaction', { message: text, command, author: message.fromUser.username });
+      command.reply(message, match, reply);
+    } else {
+      mixpanel.track('interaction', { message: text, command: 'unknown', author: message.fromUser.username });
+    }
   });
 }
 
