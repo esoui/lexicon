@@ -1,6 +1,7 @@
 const https = require('https');
 
 module.exports = {
+  name: 'version',
   pattern: "(what('s| is) the )?(current|live|pts) version",
   reply: function(message, match, reply) {
     const branch = match[3] === 'pts' ? 'pts' : 'master';

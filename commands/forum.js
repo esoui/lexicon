@@ -1,6 +1,7 @@
 const querystring = require('querystring');
 
 module.exports = {
+  name: 'forum',
   pattern: '(search (in )?)?forums? (for )?(.+)',
   reply: function(message, match, reply) {
     const params = {

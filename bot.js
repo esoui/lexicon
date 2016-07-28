@@ -27,7 +27,7 @@ export function parse(message, reply) {
     if (!command.pattern) return true;
     const match = text.match(new RegExp('^' + command.pattern, 'i'));
     if (match) {
-      mixpanel.track('interaction', { message: text, command, author: message.fromUser.username });
+      mixpanel.track('interaction', { message: text, command: command.name, author: message.fromUser.username });
       command.reply(message, match, reply);
     } else {
       mixpanel.track('interaction', { message: text, command: 'unknown', author: message.fromUser.username });

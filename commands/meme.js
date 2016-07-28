@@ -1,6 +1,7 @@
 const http = require('http');
 
 module.exports = {
+  name: 'meme',
   pattern: '((create )?meme (.+)|(see )?memes( templates)?)',
   reply: function(message, match, reply) {
     if (match[3]) {

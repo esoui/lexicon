@@ -1,6 +1,7 @@
 const querystring = require('querystring');
 
 module.exports = {
+  name: 'google',
   pattern: '(please )?google (.+)',
   reply: function(message, match, reply) {
     const params = {

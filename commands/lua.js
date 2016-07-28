@@ -1,6 +1,7 @@
 const querystring = require('querystring');
 
 module.exports = {
+  name: 'lua',
   pattern: '(search )?lua (for )?(.+)',
   reply: function(message, match, reply) {
     const params = {
