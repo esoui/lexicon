@@ -23,16 +23,13 @@ export function parse(message, reply) {
   let [ ,,text ] = message.text.match(/^lex(icon)?\s(.+)/) || [];
   if (!text) return;
 
-  let matchCommandName;
+  let matchCommandName = 'unknown';
   commands.forEach(function(command) {
     if (!command.pattern) return true;
     const match = text.match(new RegExp('^' + command.pattern, 'i'));
     if (match) {
       matchCommandName = command.name;
       command.reply(message, match, reply);
-      return false;
-    } else {
-      matchCommandName = 'unknown';
     }
   });
 
