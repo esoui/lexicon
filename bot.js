@@ -23,15 +23,19 @@ export function parse(message, reply) {
   let [ ,,text ] = message.text.match(/^lex(icon)?\s(.+)/) || [];
   if (!text) return;
 
+  let matchCommandName;
   commands.forEach(function(command) {
     if (!command.pattern) return true;
     const match = text.match(new RegExp('^' + command.pattern, 'i'));
     if (match) {
-      mixpanel.track('interaction', { message: text, command: command.name, author: message.fromUser.username });
+      matchCommandName = command.name;
       command.reply(message, match, reply);
+      return false;
     } else {
-      mixpanel.track('interaction', { message: text, command: 'unknown', author: message.fromUser.username });
+      matchCommandName = 'unknown';
     }
   });
+
+  mixpanel.track('interaction', { message: text, command: matchCommandName, author: message.fromUser.username });
 }
 
