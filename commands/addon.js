@@ -10,6 +10,6 @@ module.exports = {
       description: '',
     };
     const uri = `http://www.esoui.com/downloads/search.php?${querystring.stringify(params)}`;
-    reply(`See [add-ons results for "${match[3]}"](${uri})`);
+    reply(`See [add-ons results for "${match[4]}"](${uri})`);
   }
 };
