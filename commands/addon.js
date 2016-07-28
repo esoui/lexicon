@@ -5,7 +5,7 @@ module.exports = {
   pattern: '(search (for )?)?add-?ons? (with |named )?(.+)',
   reply: function(message, match, reply) {
     const params = {
-      search: match[3],
+      search: match[4],
       title: '',
       description: '',
     };
