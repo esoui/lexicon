@@ -4,18 +4,21 @@ const Lexicon = require('./lexicon');
 const client = new Gitter();
 
 function listenAndReply(roomId) {
-  client.readChatMessages(roomId, (message) => {
-    if (message.operation === 'create') {
-      if (message.model.fromUser.id === process.env.GITTER_LEXICON_USER_ID) return;
+  client.readChatMessages(roomId, (data) => {
+    if (data.operation === 'create') {
+      if (data.model.fromUser.id === process.env.GITTER_LEXICON_USER_ID) return;
 
       let prefix = '';
+      let message = data.model.text;
 
       if (roomId === process.env.GITTER_ESOUI_ROOM_ID) {
-        if (!/^@?lex(icon)?/.test(message.model.text)) return;
-        prefix += `@${message.model.fromUser.username} `;
+        const match = message.match(/^@?lex(icon)?(\s(.+)|$)/);
+        if (!match) return;
+        prefix += `@${data.model.fromUser.username} `;
+        message = match[3];
       }
 
-      Lexicon.parse(message.model.text, (text) => {
+      Lexicon.parse(message, (text) => {
         client.sendChatMessage(roomId, `${prefix}${text}`);
       });
     }
