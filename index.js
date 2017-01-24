@@ -39,4 +39,4 @@ client.watchRoomUpdates(process.env.GITTER_LEXICON_USER_ID, (message) => {
   }
 });
 
-// listenAndReply(process.env.GITTER_ESOUI_ROOM_ID);
+listenAndReply(process.env.GITTER_ESOUI_ROOM_ID);
