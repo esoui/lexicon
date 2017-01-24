@@ -9,6 +9,6 @@ module.exports = {
     };
     const site = match[1] ? 'http://lmgtfy.com/' : 'https://www.google.com/';
     const uri = `${site}?${querystring.stringify(params)}`;
-    reply(`See [Google results for "${match[4]}"](${uri})`);
+    reply(`See [Google results for "${match[2]}"](${uri})`);
   }
 };
