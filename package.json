@@ -5,7 +5,7 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    "start": "bin/dotenv nodemon index.js"
+    "start": "while sleep 1; do node index.js || echo 'Restarting...'; done"
   },
   "repository": {
     "type": "git",
