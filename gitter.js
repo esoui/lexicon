@@ -2,7 +2,7 @@ const Halley = require('halley');
 const https = require('https');
 
 function onError(error) {
-  console.error('--> Somethinh went wrong', error);
+  console.error('--> Something went wrong', error);
 }
 
 class AuthExt {
