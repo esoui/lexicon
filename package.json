@@ -18,8 +18,7 @@
   },
   "homepage": "https://github.com/esoui/lexicon#readme",
   "dependencies": {
-    "halley": "^0.4.7",
-    "nodemon": "^1.10.0",
+    "halley": "^0.4.8",
     "querystring": "^0.2.0"
   },
   "engines": {
