@@ -41,9 +41,6 @@ client.watchRoomUpdates(process.env.GITTER_LEXICON_USER_ID, (message) => {
         client.sendChatMessage(roomId, text);
       });
     }
-    if (activeRooms.indexOf(roomId) < 0) {
-      listenAndReply(roomId);
-      activeRooms.push(roomId);
-    }
+    listenAndReply(roomId);
   }
 });
