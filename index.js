@@ -3,7 +3,15 @@ const Lexicon = require('./lexicon');
 
 const client = new Gitter();
 
+const activeRooms = {};
+
 function listenAndReply(roomId) {
+  if (activeRooms[roomId]) {
+    return;
+  } else {
+    activeRooms[roomId] = true;
+  }
+
   client.readChatMessages(roomId, (data) => {
     if (data.operation === 'create') {
       if (data.model.fromUser.id === process.env.GITTER_LEXICON_USER_ID) return;
@@ -25,8 +33,6 @@ function listenAndReply(roomId) {
   });
 }
 
-const rooms = [];
-
 client.watchRoomUpdates(process.env.GITTER_LEXICON_USER_ID, (message) => {
   const roomId = message.model.id;
   if (message.operation === 'create' || message.operation === 'patch') {
@@ -35,11 +41,9 @@ client.watchRoomUpdates(process.env.GITTER_LEXICON_USER_ID, (message) => {
         client.sendChatMessage(roomId, text);
       });
     }
-    if (rooms.indexOf(roomId) < 0) {
+    if (activeRooms.indexOf(roomId) < 0) {
       listenAndReply(roomId);
-      rooms.push(roomId);
+      activeRooms.push(roomId);
     }
   }
 });
-
-listenAndReply(process.env.GITTER_ESOUI_ROOM_ID);
