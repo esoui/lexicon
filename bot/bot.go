@@ -17,14 +17,14 @@ func New(adapter Adapter) *Bot {
 }
 
 func (b *Bot) Handle(expr string, handler func(msg *Message)) {
-	b.Handlers[regexp.MustCompile(expr)] = handler
+	b.Handlers[regexp.MustCompile(`(?i)`+expr)] = handler
 }
 
 func (b *Bot) Listen() {
 	for {
 		msg := b.adapter.Listen()
-		for expr, handler := range b.Handlers {
-			if expr.MatchString(msg.Text) {
+		for re, handler := range b.Handlers {
+			if re.MatchString(msg.Text) {
 				handler(msg)
 				break
 			}
