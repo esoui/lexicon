@@ -2,8 +2,14 @@ package bot
 
 import "testing"
 
+type adapter struct{}
+
+func (a *adapter) Listen(chan *Message)            {}
+func (a *adapter) Reply(msg *Message, text string) {}
+
 func TestNew(t *testing.T) {
-	var i interface{} = New()
+	a := &adapter{}
+	var i interface{} = New(a)
 	b, ok := i.(*Bot)
 	if !ok {
 		t.Error("New() didn't return a bot")
@@ -14,7 +20,8 @@ func TestNew(t *testing.T) {
 }
 
 func TestBotHandle(t *testing.T) {
-	b := New()
+	a := &adapter{}
+	b := New(a)
 	expr := `test`
 	handler := func(msg *Message) {}
 	b.Handle(expr, handler)

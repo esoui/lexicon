@@ -1,22 +1,19 @@
 package bot
 
 import (
-	"fmt"
 	"regexp"
 )
 
-type Message struct {
-	Text string
-}
-
 type Bot struct {
+	adapter  Adapter
 	Handlers map[*regexp.Regexp]func(msg *Message)
 }
 
-func New() *Bot {
-	b := Bot{}
-	b.Handlers = map[*regexp.Regexp]func(msg *Message){}
-	return &b
+func New(adapter Adapter) *Bot {
+	return &Bot{
+		adapter,
+		map[*regexp.Regexp]func(msg *Message){},
+	}
 }
 
 func (b *Bot) Handle(expr string, handler func(msg *Message)) {
@@ -24,9 +21,8 @@ func (b *Bot) Handle(expr string, handler func(msg *Message)) {
 }
 
 func (b *Bot) Listen() {
-	msg := &Message{}
 	for {
-		fmt.Scanln(&msg.Text)
+		msg := b.adapter.Listen()
 		for expr, handler := range b.Handlers {
 			if expr.MatchString(msg.Text) {
 				handler(msg)
@@ -36,6 +32,6 @@ func (b *Bot) Listen() {
 	}
 }
 
-func (b *Bot) Reply(text string) {
-	fmt.Println(text)
+func (b *Bot) Reply(msg *Message, text string) {
+	b.adapter.Reply(msg, text)
 }
