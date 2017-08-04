@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	a := shell.New()
+	a := shell.New("Lexicon")
 	b := bot.New(a)
 
 	b.Handle(`hi|hello`, func(msg *bot.Message) {

@@ -5,10 +5,12 @@ import (
 	"github.com/esoui/lexicon/bot"
 )
 
-type adapter struct{}
+type adapter struct {
+	name string
+}
 
-func New() *adapter {
-	return &adapter{}
+func New(name string) *adapter {
+	return &adapter{name}
 }
 
 func (a *adapter) Listen() *bot.Message {
@@ -18,5 +20,5 @@ func (a *adapter) Listen() *bot.Message {
 	return msg
 }
 func (a *adapter) Reply(msg *bot.Message, text string) {
-	fmt.Printf("Bot: %s\n", text)
+	fmt.Printf("%s: %s\n", a.name, text)
 }
