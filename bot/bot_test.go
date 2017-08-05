@@ -1,15 +1,14 @@
 package bot
 
-import "testing"
-
-type adapter struct{}
-
-func (a *adapter) Listen(chan *Message)            {}
-func (a *adapter) Reply(msg *Message, text string) {}
+import (
+	"github.com/esoui/lexicon/bot/adapter"
+	"github.com/esoui/lexicon/bot/mock"
+	"testing"
+)
 
 func TestNew(t *testing.T) {
-	a := &adapter{}
-	var i interface{} = New(a)
+	m := mock.New()
+	var i interface{} = New(m)
 	b, ok := i.(*Bot)
 	if !ok {
 		t.Error("New() didn't return a bot")
@@ -20,10 +19,10 @@ func TestNew(t *testing.T) {
 }
 
 func TestBotHandle(t *testing.T) {
-	a := &adapter{}
-	b := New(a)
+	m := mock.New()
+	b := New(m)
 	expr := `test`
-	handler := func(msg *Message) {}
+	handler := func(msg *adapter.Message) {}
 	b.Handle(expr, handler)
 	if len(b.Handlers) != 1 {
 		t.Error("Bot.Handle() didn't register new handler")

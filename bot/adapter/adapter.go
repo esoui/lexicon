@@ -1,4 +1,8 @@
-package bot
+package adapter
+
+type Message struct {
+	Text string
+}
 
 type Adapter interface {
 	Listen() *Message

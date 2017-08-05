@@ -2,23 +2,23 @@ package shell
 
 import (
 	"fmt"
-	"github.com/esoui/lexicon/bot"
+	"github.com/esoui/lexicon/bot/adapter"
 )
 
-type adapter struct {
+type shell struct {
 	name string
 }
 
-func New(name string) *adapter {
-	return &adapter{name}
+func New(name string) *shell {
+	return &shell{name}
 }
 
-func (a *adapter) Listen() *bot.Message {
-	msg := &bot.Message{}
+func (s *shell) Listen() *adapter.Message {
+	msg := &adapter.Message{}
 	fmt.Print("You: ")
 	fmt.Scanln(&msg.Text)
 	return msg
 }
-func (a *adapter) Reply(msg *bot.Message, text string) {
-	fmt.Printf("%s: %s\n", a.name, text)
+func (s *shell) Reply(msg *adapter.Message, text string) {
+	fmt.Printf("%s: %s\n", s.name, text)
 }
