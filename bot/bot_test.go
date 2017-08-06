@@ -32,6 +32,9 @@ func TestNew(t *testing.T) {
 	if !ok {
 		t.Error("New() didn't return a bot")
 	}
+	if b.adapter != a {
+		t.Error("New() didn't set the adpater")
+	}
 	if b.handlers == nil {
 		t.Error("New() didn't initialize handlers map")
 	}
@@ -45,6 +48,9 @@ func TestBotHandle(t *testing.T) {
 	b.Handle(expr, handler)
 	if len(b.handlers) < 1 {
 		t.Error("Bot.Handle() didn't register new handler")
+	}
+	if b.handlers[0].re.String() != `(?i)`+expr {
+		t.Error("Bot.Handle() didn't add case insensitive flag to the expr")
 	}
 }
 
