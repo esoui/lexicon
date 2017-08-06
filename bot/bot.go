@@ -1,38 +1,55 @@
 package bot
 
 import (
-	"github.com/esoui/lexicon/bot/adapter"
 	"regexp"
 )
 
-type Bot struct {
-	adapter  adapter.Adapter
-	Handlers map[*regexp.Regexp]func(msg *adapter.Message)
+type Message interface {
+	Sender() string
+	Text() string
 }
 
-func New(a adapter.Adapter) *Bot {
+type Adapter interface {
+	Listen() Message
+	Reply(Message, string)
+}
+
+type Handler func(msg Message)
+
+type Handlers map[*regexp.Regexp]Handler
+
+type Bot struct {
+	adapter  Adapter
+	handlers Handlers
+}
+
+func New(adapter Adapter) *Bot {
 	return &Bot{
-		a,
-		map[*regexp.Regexp]func(msg *adapter.Message){},
+		adapter,
+		Handlers{},
 	}
 }
 
-func (b *Bot) Handle(expr string, handler func(msg *adapter.Message)) {
-	b.Handlers[regexp.MustCompile(`(?i)`+expr)] = handler
+func (b *Bot) Handle(expr string, handler Handler) {
+	re := regexp.MustCompile(`(?i)` + expr)
+	b.handlers[re] = handler
 }
 
 func (b *Bot) Listen() {
 	for {
-		msg := b.adapter.Listen()
-		for re, handler := range b.Handlers {
-			if re.MatchString(msg.Text) {
-				handler(msg)
-				break
-			}
+		b.Receive(b.adapter.Listen())
+	}
+}
+
+func (b *Bot) Receive(msg Message) {
+	for re, handler := range b.handlers {
+		if re.MatchString(msg.Text()) {
+			handler(msg)
+			break
 		}
 	}
 }
 
-func (b *Bot) Reply(msg *adapter.Message, text string) {
-	b.adapter.Reply(msg, text)
+func (b *Bot) Reply(msg Message, response string) {
+	b.adapter.Reply(msg, response)
 }
