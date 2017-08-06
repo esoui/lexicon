@@ -5,7 +5,7 @@ import (
 )
 
 type message struct {
-    text string
+	text string
 }
 
 func (m *message) Text() string {
@@ -51,26 +51,26 @@ func TestBotHandle(t *testing.T) {
 func TestBotReceive(t *testing.T) {
 	a := &adapter{}
 	b := New(a)
-    handle1 := false
-    b.Handle(`handle1|any`, func(msg Message) {
-        handle1 = true
-    })
-    handle2 := false
-    b.Handle(`handle2|any`, func(msg Message) {
-        handle2 = true
-    })
-    b.Receive(&message{text: "handle1"})
-    if !handle1 || handle2 {
-        t.Error("Bot.Receive() got the wrong handler")
-    }
-    b.Receive(&message{text: "handle2"})
-    if !handle2 {
-        t.Error("Bot.Receive() got the wrong handler")
-    }
-    handle1 = false
-    handle2 = false
-    b.Receive(&message{text: "any"})
-    if !handle1 || handle2 {
-        t.Error("Bot.Receive() isn't breaking after matching a handler")
-    }
+	handle1 := false
+	b.Handle(`handle1|any`, func(msg Message) {
+		handle1 = true
+	})
+	handle2 := false
+	b.Handle(`handle2|any`, func(msg Message) {
+		handle2 = true
+	})
+	b.Receive(&message{text: "handle1"})
+	if !handle1 || handle2 {
+		t.Error("Bot.Receive() got the wrong handler")
+	}
+	b.Receive(&message{text: "handle2"})
+	if !handle2 {
+		t.Error("Bot.Receive() got the wrong handler")
+	}
+	handle1 = false
+	handle2 = false
+	b.Receive(&message{text: "any"})
+	if !handle1 || handle2 {
+		t.Error("Bot.Receive() isn't breaking after matching a handler")
+	}
 }
