@@ -8,13 +8,8 @@ import (
 )
 
 type message struct {
-	text   string `json:"text"`
-	sender string `json:"sender"`
-}
-
-type payload struct {
-	Text   string `json:"text"`
-	Sender string `json:"sender"`
+	text   string
+	sender string
 }
 
 func (m *message) Text() string {
@@ -23,6 +18,11 @@ func (m *message) Text() string {
 
 func (m *message) Sender() string {
 	return m.sender
+}
+
+type payload struct {
+	Text   string `json:"text"`
+	Sender string `json:"sender"`
 }
 
 func (m *message) MarshalJSON() ([]byte, error) {
