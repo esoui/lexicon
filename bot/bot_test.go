@@ -54,7 +54,7 @@ func TestNew(t *testing.T) {
 		t.Error("New doesn't return a bot")
 	}
 	if b.adapter != a {
-		t.Error("New doesn't set the adpater")
+		t.Error("New doesn't set the adapter")
 	}
 	if b.handlers == nil {
 		t.Error("New doesn't initialize handlers map")
