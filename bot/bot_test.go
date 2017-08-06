@@ -17,26 +17,47 @@ func (m *message) Sender() string {
 }
 
 type adapter struct {
+	response string
+	msg Message
 }
 
-func (s *adapter) Listen() Message {
+func (a *adapter) Listen() Message {
 	return &message{}
 }
 
-func (s *adapter) Reply(msg Message, text string) {}
+func (a *adapter) Reply(msg Message, text string) {
+	a.response = text
+	a.msg = msg
+}
+
+func TestAdapter(t *testing.T) {
+	var i interface{} = &adapter{}
+	_, ok := i.(Adapter)
+	if !ok {
+		t.Error("adapter{} doesn't implement Adapter")
+	}
+}
+
+func TestMessage(t *testing.T) {
+	var i interface{} = &message{}
+	_, ok := i.(Message)
+	if !ok {
+		t.Error("message{} doesn't implement Message")
+	}
+}
 
 func TestNew(t *testing.T) {
 	a := &adapter{}
 	var i interface{} = New(a)
 	b, ok := i.(*Bot)
 	if !ok {
-		t.Error("New() didn't return a bot")
+		t.Error("New doesn't return a bot")
 	}
 	if b.adapter != a {
-		t.Error("New() didn't set the adpater")
+		t.Error("New doesn't set the adpater")
 	}
 	if b.handlers == nil {
-		t.Error("New() didn't initialize handlers map")
+		t.Error("New doesn't initialize handlers map")
 	}
 }
 
@@ -47,10 +68,10 @@ func TestBotHandle(t *testing.T) {
 	handler := func(msg Message) {}
 	b.Handle(expr, handler)
 	if len(b.handlers) < 1 {
-		t.Error("Bot.Handle() didn't register new handler")
+		t.Error("Bot.Handle doesn't register new handler")
 	}
 	if b.handlers[0].re.String() != `(?i)`+expr {
-		t.Error("Bot.Handle() didn't add case insensitive flag to the expr")
+		t.Error("Bot.Handle doesn't add case insensitive flag to the expr")
 	}
 }
 
@@ -67,16 +88,19 @@ func TestBotReceive(t *testing.T) {
 	})
 	b.Receive(&message{text: "handle1"})
 	if !handle1 || handle2 {
-		t.Error("Bot.Receive() got the wrong handler")
+		t.Error("Bot.Receive got the wrong handler")
 	}
 	b.Receive(&message{text: "handle2"})
 	if !handle2 {
-		t.Error("Bot.Receive() got the wrong handler")
+		t.Error("Bot.Receive got the wrong handler")
 	}
 	handle1 = false
 	handle2 = false
 	b.Receive(&message{text: "any"})
-	if !handle1 || handle2 {
-		t.Error("Bot.Receive() isn't breaking after matching a handler")
+	if !handle1 {
+		t.Error("Bot.Receive isn't preserving order")
+	}
+	if handle2 {
+		t.Error("Bot.Receive isn't breaking after first match")
 	}
 }
