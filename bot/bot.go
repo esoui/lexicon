@@ -14,9 +14,12 @@ type Adapter interface {
 	Reply(Message, string)
 }
 
-type Handler func(msg Message)
+type Handler struct {
+	re      *regexp.Regexp
+	handler func(Message)
+}
 
-type Handlers map[*regexp.Regexp]Handler
+type Handlers []*Handler
 
 type Bot struct {
 	adapter  Adapter
@@ -30,9 +33,12 @@ func New(adapter Adapter) *Bot {
 	}
 }
 
-func (b *Bot) Handle(expr string, handler Handler) {
-	re := regexp.MustCompile(`(?i)` + expr)
-	b.handlers[re] = handler
+func (b *Bot) Handle(expr string, handler func(Message)) {
+	h := &Handler{
+		re:      regexp.MustCompile(`(?i)` + expr),
+		handler: handler,
+	}
+	b.handlers = append(b.handlers, h)
 }
 
 func (b *Bot) Listen() {
@@ -42,9 +48,9 @@ func (b *Bot) Listen() {
 }
 
 func (b *Bot) Receive(msg Message) {
-	for re, handler := range b.handlers {
-		if re.MatchString(msg.Text()) {
-			handler(msg)
+	for _, h := range b.handlers {
+		if h.re.MatchString(msg.Text()) {
+			h.handler(msg)
 			break
 		}
 	}
