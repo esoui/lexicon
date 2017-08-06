@@ -104,3 +104,14 @@ func TestBotReceive(t *testing.T) {
 		t.Error("Bot.Receive isn't breaking after first match")
 	}
 }
+
+func TestBotReply(t *testing.T) {
+	a := &adapter{}
+	b := New(a)
+	msg := &message{}
+	response := "test"
+	b.Reply(msg, response)
+	if a.response != response || a.msg != msg {
+		t.Error("Bot.Reply isn't properly calling Adapter.Reply")
+	}
+}
