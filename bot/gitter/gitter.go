@@ -25,13 +25,13 @@ type adapter struct {
 	name     string
 	api      *gitter.Gitter
 	incoming chan *message
-	user *gitter.User
+	user     *gitter.User
 }
 
 func New(name string) *adapter {
 	a := &adapter{
-		name: name,
-		api:  gitter.New(os.Getenv("GITTER_TOKEN")),
+		name:     name,
+		api:      gitter.New(os.Getenv("GITTER_TOKEN")),
 		incoming: make(chan *message),
 	}
 	var err error
