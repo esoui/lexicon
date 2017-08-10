@@ -6,6 +6,15 @@
 
 More on http://wiki.esoui.com/Lexicon.
 
+This is the remake of Lexicon in Go, for the live version (made in Node.js) see [**node** branch](tree/node).
+
+## To-do
+
+- [ ] Listen() loop should have an exit switch or perhaps an event/signaling channel.
+- [ ] Broadcast() method.
+- [ ] Message will eventually need the concept of Room and if whether it's a private conversation.
+- [ ] Make sure the Listen() mechanism can deal with concurrently incoming messages. Although it's the adapter's concern it should be straightforward to make it work nicely.
+
 ## Legal
 
 The MIT License © 2016 Arthur Corenzan.
