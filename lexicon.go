@@ -2,11 +2,11 @@ package main
 
 import (
 	"github.com/esoui/lexicon/bot"
-	"github.com/esoui/lexicon/bot/web"
+	"github.com/esoui/lexicon/bot/gitter"
 )
 
 func main() {
-	a := web.New("Lexicon")
+	a := gitter.New("Lexicon")
 	b := bot.New(a)
 
 	b.Handle(`hi|hello`, func(m bot.Message) {
