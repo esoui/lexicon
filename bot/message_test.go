@@ -5,6 +5,7 @@ import (
 )
 
 type message struct {
+	text, reply string
 }
 
 func (m *message) Sender() string {
@@ -12,9 +13,12 @@ func (m *message) Sender() string {
 }
 
 func (m *message) Text() string {
-	return ""
+	return m.text
 }
 
 func TestMessage(t *testing.T) {
-	t.SkipNow()
+	var i interface{} = &message{}
+	if _, ok := i.(Message); !ok {
+		t.Fatal("message{} should've been cast successfully")
+	}
 }

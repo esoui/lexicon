@@ -11,8 +11,13 @@ func (a *adapter) Receive() Message {
 }
 
 func (a *adapter) Reply(m Message, reply string) {
+	n := m.(*message)
+	n.reply = reply
 }
 
 func TestAdapter(t *testing.T) {
-	t.SkipNow()
+	var i interface{} = &adapter{}
+	if _, ok := i.(Adapter); !ok {
+		t.Fatal("adapter{} should've been cast successfully")
+	}
 }
