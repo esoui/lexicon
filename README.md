@@ -6,7 +6,13 @@
 
 More on http://wiki.esoui.com/Lexicon.
 
-This is the remake of Lexicon in Go, for the live version (made in Node.js) see [**node** branch](tree/node).
+This is the remake of Lexicon in Go, for the Node.js version see [**node** branch](tree/node).
+
+## Setup
+
+```shell
+$ make
+```
 
 ## To-do
 
