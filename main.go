@@ -6,6 +6,7 @@ import (
 	"github.com/esoui/lexicon/lexicon/help"
 	"github.com/esoui/lexicon/lexicon/joke"
 	"github.com/esoui/lexicon/lexicon/search"
+	"github.com/esoui/lexicon/lexicon/status"
 )
 
 func main() {
@@ -13,6 +14,7 @@ func main() {
 	b := bot.New(a)
 	b.Handle(search.Expr, search.Handler)
 	b.Handle(joke.Expr, joke.Handler)
+	b.Handle(status.Expr, status.Handler)
 	b.Handle(help.Expr, help.Handler)
 	b.Listen()
 }
