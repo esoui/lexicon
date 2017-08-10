@@ -1,2 +1,3 @@
 default:
-	go build -o dist/lexicon
+	@go get
+	@go build -o dist/lexicon
