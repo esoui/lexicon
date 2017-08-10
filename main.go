@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	a := gitter.New("Lexicon")
+	a := gitter.New()
 	b := bot.New(a)
 	b.Handle(search.Expr, search.Handler)
 	b.Handle(joke.Expr, joke.Handler)
