@@ -25,13 +25,13 @@ func New(name string) *shell {
 	return &shell{name}
 }
 
-func (s *shell) Listen() bot.Message {
-	msg := &message{}
+func (s *shell) Receive() bot.Message {
+	m := &message{}
 	fmt.Print("You: ")
-	fmt.Scanln(&msg.text)
-	return msg
+	fmt.Scanln(&m.text)
+	return m
 }
 
-func (s *shell) Reply(msg bot.Message, text string) {
-	fmt.Printf("%s: %s\n", s.name, text)
+func (s *shell) Reply(m bot.Message, reply string) {
+	fmt.Printf("%s: %s\n", s.name, reply)
 }

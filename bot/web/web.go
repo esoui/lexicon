@@ -55,35 +55,35 @@ func New(name string) *web {
 		incoming: make(chan *message),
 		outgoing: make(chan *message),
 	}
-	http.HandleFunc("/message", w.Handler)
+	http.HandleFunc("/message", w.HTTPHandler)
 	go http.ListenAndServe(":8080", nil)
-	log.Print("Web adapter is listening on localhost:8080")
+	log.Print("Web adapter is now listening on :8080")
 	return w
 }
 
-func (w *web) Handler(res http.ResponseWriter, req *http.Request) {
-	res.Header().Set("Content-Type", "application/json; charset=utf-8")
-	msg := &message{}
-	err := json.NewDecoder(req.Body).Decode(msg)
+func (w *web) HTTPHandler(r http.ResponseWriter, req *http.Request) {
+	r.Header().Set("Content-Type", "application/json; charset=utf-8")
+	m := &message{}
+	err := json.NewDecoder(req.Body).Decode(m)
 	if err != nil {
 		log.Print("Couldn't decode request body")
-		res.WriteHeader(http.StatusUnprocessableEntity)
+		r.WriteHeader(http.StatusUnprocessableEntity)
 		return
 	}
-	log.Printf("New incoming message %+v", msg)
-	w.incoming <- msg
-	err = json.NewEncoder(res).Encode(<-w.outgoing)
+	log.Printf("New incoming message %+v", m)
+	w.incoming <- m
+	err = json.NewEncoder(r).Encode(<-w.outgoing)
 	if err != nil {
 		log.Print("Couldn't encode response")
-		res.WriteHeader(http.StatusUnprocessableEntity)
+		r.WriteHeader(http.StatusUnprocessableEntity)
 		return
 	}
 }
 
-func (w *web) Listen() bot.Message {
+func (w *web) Receive() bot.Message {
 	return <-w.incoming
 }
 
-func (w *web) Reply(msg bot.Message, text string) {
-	w.outgoing <- &message{text: text, sender: w.name}
+func (w *web) Reply(m bot.Message, reply string) {
+	w.outgoing <- &message{text: reply, sender: w.name}
 }
