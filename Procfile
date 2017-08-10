@@ -1,1 +1,1 @@
-web: build/lexicon
+bot: dist/lexicon
