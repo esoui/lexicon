@@ -23,7 +23,7 @@ func TestBotHandle(t *testing.T) {
 	a := &adapter{}
 	b := New(a)
 	expr := `test`
-	handler := func(m Message) {}
+	handler := func(b *Bot, m Message, match []string) {}
 	b.Handle(expr, handler)
 	if len(b.handles) < 1 {
 		t.Fatal("Bot.Handle() should've registered a new handler")
@@ -42,7 +42,7 @@ func TestBotReceive(t *testing.T) {
 	b := New(a)
 	handled := false
 	expr := `test`
-	handler := func(m Message) {
+	handler := func(b *Bot, m Message, match []string) {
 		handled = true
 	}
 	b.Handle(expr, handler)

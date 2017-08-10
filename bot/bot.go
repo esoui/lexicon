@@ -32,8 +32,8 @@ func (b *Bot) Listen() {
 
 func (b *Bot) Receive(m Message) {
 	for _, h := range b.handles {
-		if h.re.MatchString(m.Text()) {
-			h.handler(m)
+		if match := h.re.FindStringSubmatch(m.Text()); match != nil {
+			h.handler(b, m, match)
 			break
 		}
 	}

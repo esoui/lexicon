@@ -4,7 +4,7 @@ import (
 	"regexp"
 )
 
-type Handler func(Message)
+type Handler func(*Bot, Message, []string)
 
 type Handle struct {
 	re      *regexp.Regexp
