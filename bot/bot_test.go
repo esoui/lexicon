@@ -14,7 +14,7 @@ func TestNew(t *testing.T) {
 	if b.adapter != a {
 		t.Fatal("New() should've had an adapter")
 	}
-	if b.handlers == nil {
+	if b.handles == nil {
 		t.Fatal("New() should've initialized Handlers")
 	}
 }
@@ -25,10 +25,10 @@ func TestBotHandle(t *testing.T) {
 	expr := `test`
 	handler := func(m Message) {}
 	b.Handle(expr, handler)
-	if len(b.handlers) < 1 {
+	if len(b.handles) < 1 {
 		t.Fatal("Bot.Handle() should've registered a new handler")
 	}
-	if b.handlers[0].re.String() != `(?i)`+expr {
+	if b.handles[0].re.String() != `(?i)`+expr {
 		t.Fatal("Bot.Handle() should've added case insensitive flag before the expr")
 	}
 }

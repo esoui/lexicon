@@ -5,23 +5,23 @@ import (
 )
 
 type Bot struct {
-	adapter  Adapter
-	handlers Handlers
+	adapter Adapter
+	handles Handles
 }
 
 func New(adapter Adapter) *Bot {
 	return &Bot{
 		adapter,
-		Handlers{},
+		Handles{},
 	}
 }
 
-func (b *Bot) Handle(expr string, handler func(Message)) {
-	h := &Handler{
+func (b *Bot) Handle(expr string, handler Handler) {
+	h := &Handle{
 		re:      regexp.MustCompile(`(?i)` + expr),
 		handler: handler,
 	}
-	b.handlers = append(b.handlers, h)
+	b.handles = append(b.handles, h)
 }
 
 func (b *Bot) Listen() {
@@ -31,7 +31,7 @@ func (b *Bot) Listen() {
 }
 
 func (b *Bot) Receive(m Message) {
-	for _, h := range b.handlers {
+	for _, h := range b.handles {
 		if h.re.MatchString(m.Text()) {
 			h.handler(m)
 			break
