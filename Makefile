@@ -1,2 +1,2 @@
-default: 
-	go build -o build/lexicon
+default:
+	go build -o dist/lexicon
