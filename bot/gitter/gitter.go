@@ -39,7 +39,7 @@ func New() *adapter {
 	var err error
 	a.user, err = a.api.GetUser()
 	if err != nil {
-		log.Println("Error on getting API user")
+		log.Printf("gitter.New(): %s", err)
 	}
 	go a.Poll()
 	return a
@@ -49,7 +49,7 @@ func (a *adapter) Poll() {
 	for {
 		rooms, err := a.api.GetRooms()
 		if err != nil {
-			log.Println("Error on getting rooms")
+			log.Printf("gitter.Poll(): %s", err)
 		}
 		for _, room := range rooms {
 			if _, ok := a.rooms[room.ID]; ok {
@@ -65,7 +65,7 @@ func (a *adapter) Listen(roomID string, private bool) {
 	a.rooms[roomID] = true
 	stream := a.api.Stream(roomID)
 	go a.api.Listen(stream)
-	log.Printf("Listening to Room %s\n", roomID)
+	log.Printf("gitter.Listen(): listening to room %s\n", roomID)
 	for {
 		event := <-stream.Event
 		switch e := event.Data.(type) {
