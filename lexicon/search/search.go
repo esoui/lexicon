@@ -27,7 +27,7 @@ func Handler(b *bot.Bot, m bot.Message, match []string) {
 		u := `https://github.com/esoui/esoui/search?utf8=✓&type=Code&q=` + q
 		b.Reply(m, fmt.Sprintf(`See [source results for "%s"](%s).`, match[2], u))
 	case "google":
-		u := `https://www.google.com/?q=` + q
+		u := `https://www.google.com/search?q=` + q
 		b.Reply(m, fmt.Sprintf(`See [Google results for "%s"](%s).`, match[2], u))
 	case "wiki":
 		u := `http://wiki.esoui.com/w/index.php?go=1&search=` + q
