@@ -16,12 +16,19 @@ const dock = await dockStart({
       languages: ["en"],
       modelFileName: "nlp/model.json",
       corpora: ["nlp/corpus.json"],
+      executeActionsBeforeAnswers: true,
     },
   },
   use: ["Basic", "LangEn"],
 });
 
 const nlp = dock.get("nlp");
+
+nlp.registerActionFunction("handleDateTime", async (data, locale) => {
+  data.context.now = new Date().toLocaleString(locale);
+  return data;
+});
+
 await nlp.train();
 
 const args = minimist(process.argv.slice(2));
