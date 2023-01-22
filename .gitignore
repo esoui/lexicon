@@ -1,5 +1,5 @@
 node_modules
 .env
-support/matrix/data
+support/synapse/data
 storage/*
 !storage/.keep

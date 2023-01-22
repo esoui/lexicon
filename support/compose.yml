@@ -3,8 +3,8 @@ services:
     image: matrixdotorg/synapse:v1.75.0
     hostname: matrix.local.crz.li
     volumes:
-      - ./matrix/data:/data
-      - ./matrix/config:/config
+      - ./synapse/data:/data
+      - ./synapse/config:/config
     ports:
       - 8008:8008
     environment:
