@@ -1,0 +1,31 @@
+{
+  "private": true,
+  "name": "lexicon",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "npm run start:${NODE_ENV:=development} --",
+    "start:production": "node src/index.js --",
+    "start:development": "node-dev --respawn src/index.js --"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/esoui/lexicon.git"
+  },
+  "keywords": [],
+  "author": "Arthur <arthur@corenzan.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/esoui/lexicon/issues"
+  },
+  "homepage": "https://github.com/esoui/lexicon#readme",
+  "dependencies": {
+    "@nlpjs/basic": "^4.26.1",
+    "matrix-bot-sdk": "^0.6.3",
+    "minimist": "^1.2.7"
+  },
+  "devDependencies": {
+    "node-dev": "^8.0.0"
+  }
+}

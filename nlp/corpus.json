@@ -1,0 +1,88 @@
+{
+  "name": "Corpus",
+  "locale": "en-US",
+  "entities": {
+    "datetime": {
+      "options": {
+        "date": ["date", "day", "month", "year"],
+        "time": ["time", "hour", "minute", "second"]
+      }
+    },
+    "searchable": {
+      "options": {
+        "add-on": ["Add-on", "Addon"],
+        "lua": ["Lua"],
+        "api": ["API", "Game API", "ESO API"]
+      }
+    },
+    "query": {
+      "trim": [
+        {
+          "position": "afterFirst",
+          "words": ["for", "named"]
+        },
+        {
+          "position": "betweenFirst",
+          "leftWords": ["for"],
+          "rightWords": ["in"]
+        }
+      ]
+    }
+  },
+  "data": [
+    {
+      "intent": "datetime",
+      "utterances": [
+        "What @datetime is it?",
+        "What is the @datetime?",
+        "What @datetime is today?",
+        "Which @datetime is it?"
+      ],
+      "answers": ["It's {{datetime}}."],
+      "actions": [
+        {
+          "name": "handleDateTime"
+        }
+      ]
+    },
+    {
+      "intent": "search",
+      "utterances": [
+        "I want to search",
+        "Search @searchable for @query",
+        "Look for @searchable named @query",
+        "Search for @query in @searchable"
+      ],
+      "slotFilling": {
+        "searchable": {
+          "mandatory": true,
+          "question": "Where do you want to search? (Add-ons, Lua, API)"
+        },
+        "query": {
+          "mandatory": true,
+          "question": "What is your query?"
+        }
+      },
+      "actions": [
+        {
+          "name": "handleSearch"
+        }
+      ]
+    },
+    {
+      "intent": "status",
+      "utterances": [
+        "What is the game status?",
+        "How is the server?",
+        "How is the game?",
+        "Is the game down?",
+        "Are the servers down?"
+      ],
+      "actions": [
+        {
+          "name": "handleGameStatus"
+        }
+      ]
+    }
+  ]
+}

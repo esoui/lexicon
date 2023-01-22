@@ -1,5 +1,5 @@
-.DS_Store
+node_modules
 .env
-coverage.txt
-dist/lexicon
-vendor/*/
+support/matrix/data
+storage/*
+!storage/.keep

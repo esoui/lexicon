@@ -1,0 +1,15 @@
+services:
+  bot:
+    build: .
+    volumes:
+      - storage:/usr/src/app/storage
+    env_file: .env
+    command:
+      - npm
+      - start
+      - --
+      - -h $HOMESERVER_URL
+      - -t $TOKEN
+
+volumes:
+  storage: null

@@ -1,0 +1,10 @@
+{
+  "default_server_config": {
+    "m.homeserver": {
+      "base_url": "http://matrix.local.crz.li:8008"
+    },
+    "m.identity_server": {
+      "base_url": "https://vector.im"
+    }
+  }
+}
