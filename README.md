@@ -22,7 +22,7 @@ npm ci
 Then you can run the bot.
 
 ```sh
-npm start -- -s http://matrix.local.crz.li:8008 -u bot -p insecurepassword
+npm start -- -s http://matrix.local.crz.li:8008 -u bot -p thisisnotsecure
 ```
 
 If you need we also provide support files to launch Matrix and Element instances so you test drive your bot. You'll need Docker v20+ and Docker Compose plugin installed. Also, make sure ports `8000` and `8008` are available.
