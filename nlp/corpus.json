@@ -78,6 +78,7 @@
         "Is the game down?",
         "Are the servers down?"
       ],
+      "answers": ["I checked the game servers: {{status}}"],
       "actions": [
         {
           "name": "handleGameStatus"

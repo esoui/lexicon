@@ -8,6 +8,7 @@ import {
 } from "matrix-bot-sdk";
 import minimist from "minimist";
 import { dockStart } from "@nlpjs/basic";
+import { getGameServerStatus } from "./game-server-status.js";
 
 const dock = await dockStart({
   settings: {
@@ -27,6 +28,25 @@ const nlp = dock.get("nlp");
 nlp.registerActionFunction("handleDateTime", async (data, locale) => {
   data.context.now = new Date().toLocaleString(locale);
   return data;
+});
+
+nlp.registerActionFunction("handleGameStatus", async (data, locale) => {
+  try {
+    const status = await getGameServerStatus();
+    data.context.status = `
+      - PTS is ${status.pts}
+      - PC/NA is ${status.pc.na}
+      - PC/EU is ${status.pc.eu}
+      - Xbox/US is ${status.xbox.us}
+      - Xbox/EU is ${status.xbox.eu}
+      - PS4/US is ${status.ps4.us}
+      - PS4/EU is ${status.ps4.eu}
+    `;
+    return data;
+  } catch (err) {
+    console.error(err);
+    data.context.failed = true;
+  }
 });
 
 await nlp.train();
