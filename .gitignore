@@ -1,5 +1,5 @@
 node_modules
 .env
-support/synapse/data
-storage/*
-!storage/.keep
+/support/synapse/data
+/storage/bot.json
+/storage/sled

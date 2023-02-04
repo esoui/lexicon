@@ -5,18 +5,23 @@ import {
   SimpleFsStorageProvider,
   MatrixAuth,
   MessageEvent,
+  MatrixProfile,
 } from "matrix-bot-sdk";
 import minimist from "minimist";
+import LRUCache from "lru-cache";
 import { dockStart } from "@nlpjs/basic";
-import { getGameServerStatus } from "./game-server-status.js";
+
+import handleTime from "./features/time.js";
+import handleServerStatus from "./features/status.js";
+import handleSearch from "./features/search.js";
+import handleJoke from "./features/joke.js";
 
 const dock = await dockStart({
   settings: {
     nlp: {
       log: true,
       languages: ["en"],
-      modelFileName: "nlp/model.json",
-      corpora: ["nlp/corpus.json"],
+      modelFileName: "storage/model.json",
       executeActionsBeforeAnswers: true,
     },
   },
@@ -25,29 +30,10 @@ const dock = await dockStart({
 
 const nlp = dock.get("nlp");
 
-nlp.registerActionFunction("handleDateTime", async (data, locale) => {
-  data.context.now = new Date().toLocaleString(locale);
-  return data;
-});
-
-nlp.registerActionFunction("handleGameStatus", async (data, locale) => {
-  try {
-    const status = await getGameServerStatus();
-    data.context.status = `
-      - PTS is ${status.pts}
-      - PC/NA is ${status.pc.na}
-      - PC/EU is ${status.pc.eu}
-      - Xbox/US is ${status.xbox.us}
-      - Xbox/EU is ${status.xbox.eu}
-      - PS4/US is ${status.ps4.us}
-      - PS4/EU is ${status.ps4.eu}
-    `;
-    return data;
-  } catch (err) {
-    console.error(err);
-    data.context.failed = true;
-  }
-});
+handleTime(nlp);
+handleServerStatus(nlp);
+handleSearch(nlp);
+handleJoke(nlp);
 
 await nlp.train();
 
@@ -76,38 +62,51 @@ if (!config.accessToken) {
 // const storage = new MemoryStorageProvider();
 const storage = new SimpleFsStorageProvider("storage/bot.json");
 const crypto = new RustSdkCryptoStorageProvider("storage/sled");
-const client = new MatrixClient(
+const matrix = new MatrixClient(
   config.homeserverUrl,
   config.accessToken,
   storage,
   crypto
 );
-AutojoinRoomsMixin.setupOnClient(client);
+const botId = await matrix.getUserId();
+AutojoinRoomsMixin.setupOnClient(matrix);
+
+const cache = new LRUCache({ max: 20 });
+
+async function getContext(userId) {
+  if (!cache.has(userId)) {
+    const profile = await matrix.getUserProfile(userId);
+    cache.set(userId, { profile: new MatrixProfile(userId, profile) });
+  }
+  return cache.get(userId);
+}
 
 async function handler(roomId, event) {
-  const senderId = await client.getUserId();
-  if (event.sender === senderId) {
+  const senderId = event.sender;
+  if (senderId === botId) {
     return;
   }
 
   const message = new MessageEvent(event);
-
   if (message.messageType !== "m.text") {
     return;
   }
-  console.log(`Message from ${event.sender} on ${roomId}`);
+  console.log(`Message`, message);
 
-  const response = await nlp.process("en", message.textBody);
+  const context = await getContext(senderId);
+  console.log(`Context`, context);
+
+  const response = await nlp.process("en", message.textBody, context);
   console.log("Nlp response", response);
 
-  await client.replyNotice(
+  await matrix.replyNotice(
     roomId,
     event,
-    response?.answer ?? "Sorry but I don't understand that."
+    response?.answer ?? "Sorry but I couldn't understand that."
   );
 }
-client.on("room.message", handler);
+matrix.on("room.message", handler);
 
-await client.start();
+await matrix.start();
 
 console.log(`Bot started on ${config.homeserverUrl}`);
