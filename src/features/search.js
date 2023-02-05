@@ -40,7 +40,7 @@ const corpus = {
   entities: {
     source: {
       options: {
-        source: ["source", "github", "ui", "interface"],
+        source: ["source", "github", "code"],
         addOn: ["add-on", "addon"],
         author: ["author", "creator"],
         lua: ["Lua"],
@@ -52,17 +52,12 @@ const corpus = {
       trim: [
         {
           position: "between",
-          leftWords: ["for", "search", "find"],
+          leftWords: ["search", "find"],
           rightWords: ["in"],
         },
         {
-          position: "afterFirst",
-          words: ["for", "named"],
-        },
-        {
-          position: "afterLast",
-          words: ["search"],
-          opts: { noSpaces: true },
+          position: "after",
+          words: ["named", "with", "by", "for"],
         },
       ],
     },
@@ -71,9 +66,12 @@ const corpus = {
     {
       intent: "search",
       utterances: [
-        "Search @source for @query",
-        "Look for @source named @query",
-        "Search for @query in @source",
+        "Search in @source for @query",
+        "Search @query in @source",
+        "Find @source with @query",
+        "Find @source named @query",
+        "Find @source by @query",
+        "Find @query in @source",
       ],
       slotFilling: {
         source: {
@@ -91,7 +89,7 @@ const corpus = {
           name: "handleSearch",
         },
       ],
-      answers: ['Searching {{source}} for "{{query}}": {{url}}'],
+      answers: ["{{url}}"],
     },
   ],
 };
@@ -103,11 +101,14 @@ export default function (nlp) {
     const source = data.entities.find(
       ({ entity }) => entity === "source"
     )?.option;
-    const query = data.entities.find(
-      ({ entity }) => entity === "query"
-    )?.utteranceText;
+    const query = data.entities
+      .find(({ entity }) => entity === "query")
+      ?.utteranceText.trim();
 
-    // Although entities are avaiable in answer interpolation,
+    // Although the entity arealdy is avaiable for interpolation, it isn't trimmed.
+    data.context.query = query;
+
+    // And by default it's what the user uttered instead of the canonical name of the entity.
     // data.context.source = source;
 
     if (source && query) {
