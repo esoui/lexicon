@@ -60,13 +60,31 @@ export default function (nlp) {
     try {
       const status = await getGameServerStatus();
       data.context.status = `
-        - PTS is ${status.pts}
-        - PC/NA is ${status.pc.na}
-        - PC/EU is ${status.pc.eu}
-        - Xbox/US is ${status.xbox.us}
-        - Xbox/EU is ${status.xbox.eu}
-        - PS4/US is ${status.ps4.us}
-        - PS4/EU is ${status.ps4.eu}
+      <table>
+        <tbody>
+          <tr>
+            <td></td>
+            <th>PTS</th>
+            <th>PC</th>
+            <th>Xbox</th>
+            <th>PS4</th>
+          </tr>
+          <tr>
+            <th>NA</th>
+            <td>${status.pts}</td>
+            <td>${status.pc.na}</td>
+            <td>${status.xbox.us}</td>
+            <td>${status.ps4.us}</td>
+          </tr>
+          <tr>
+            <th>EU</th>
+            <td>-</td>
+            <td>${status.pc.eu}</td>
+            <td>${status.xbox.eu}</td>
+            <td>${status.ps4.eu}</td>
+          </tr>
+        </tbody>
+      </table>
       `;
     } catch (err) {
       console.error(err);

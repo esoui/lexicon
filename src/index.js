@@ -102,6 +102,7 @@ async function handler(roomId, event) {
   await matrix.replyNotice(
     roomId,
     event,
+    "",
     response?.answer ?? "Sorry but I couldn't understand that."
   );
 }
