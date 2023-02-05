@@ -15,6 +15,7 @@ import handleTime from "./features/time.js";
 import handleServerStatus from "./features/status.js";
 import handleSearch from "./features/search.js";
 import handleJoke from "./features/joke.js";
+import handlePatchNotes from "./features/patch.js";
 
 const dock = await dockStart({
   settings: {
@@ -34,6 +35,7 @@ handleTime(nlp);
 handleServerStatus(nlp);
 handleSearch(nlp);
 handleJoke(nlp);
+handlePatchNotes(nlp);
 
 await nlp.train();
 
