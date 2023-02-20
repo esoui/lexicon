@@ -17,8 +17,10 @@ function getConnector(args) {
           password: args.p || process.env.BOT_PASSWORD,
           debug: args.x,
           extractMessageText: (message) => {
-            if (message.indexOf("lexicon:") > -1) {
-              return message.split("lexicon:").pop().trim();
+            if (message.indexOf("lexicon:") === 0) {
+              return message.slice(8).trim();
+            } else if (message.indexOf("lex:") === 0) {
+              return message.slice(4).trim();
             }
           },
         },
