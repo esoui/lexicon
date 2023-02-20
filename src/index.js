@@ -45,7 +45,7 @@ const args = minimist(process.argv.slice(2), {
     connector: ["c"],
   },
   default: {
-    connector: "console",
+    connector: "matrix",
   },
 });
 

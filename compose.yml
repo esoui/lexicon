@@ -5,7 +5,6 @@ services:
       - storage:/usr/src/app/storage
     env_file: .env
     command: |
-      -c matrix
       -h $HOMESERVER_URL
       -u $BOT_USERNAME
       -p $BOT_PASSWORD
