@@ -4,10 +4,6 @@ services:
     volumes:
       - storage:/usr/src/app/storage
     env_file: .env
-    command: |
-      -h $HOMESERVER_URL
-      -u $BOT_USERNAME
-      -p $BOT_PASSWORD
 
 volumes:
   storage: null

@@ -12,9 +12,9 @@ function getConnector(args) {
     case "matrix":
       return {
         settings: {
-          homeserverUrl: args.h,
-          username: args.u,
-          password: args.p,
+          homeserverUrl: args.h || process.env.HOMESERVER_URL,
+          username: args.u || process.env.BOT_USERNAME,
+          password: args.p || process.env.BOT_PASSWORD,
           debug: args.x,
           extractMessageText: (message) => {
             if (message.indexOf("lexicon:") > -1) {
