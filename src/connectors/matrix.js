@@ -18,6 +18,7 @@ LogService.setLogger(new RichConsoleLogger());
 class MatrixConnector extends Connector {
   async initialize() {
     this.applySettings(this.settings, {
+      timestamp: Date.now(),
       homeserverUrl: "",
       username: "",
       password: "",
@@ -74,6 +75,12 @@ class MatrixConnector extends Connector {
       }
 
       const message = new MessageEvent(event);
+
+      if (message.timestamp < this.settings.timestamp) {
+        LogService.debug("MatrixConnector", "Skipping old event");
+        return;
+      }
+
       if (message.messageType !== "m.text") {
         LogService.debug("MatrixConnector", "Skipping non text message event");
         return;
