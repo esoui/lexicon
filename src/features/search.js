@@ -1,6 +1,6 @@
 function createGitHubSearchUrl(query) {
-  const url = new URL("https://github.com/search?type=code");
-  url.searchParams.set("q", `repo:esoui/esoui ${query}`);
+  const url = new URL("https://github.com/esoui/esoui/search");
+  url.searchParams.set("q", query);
   return url.toString();
 }
 
@@ -10,7 +10,7 @@ function createLuaSearchUrl(query) {
   return url.toString();
 }
 
-function createWikiSearchUrl(query) {
+function createApiSearchUrl(query) {
   const url = new URL("http://wiki.esoui.com/w/index.php?go=1");
   url.searchParams.set("search", query);
   return url.toString();
@@ -28,7 +28,7 @@ function createAuthorSearchUrl(query) {
   return url.toString();
 }
 
-function createEsouiSearchUrl(query) {
+function createForumSearchUrl(query) {
   const url = new URL("http://www.esoui.com/forums/search.php?do=process");
   url.searchParams.set("query", query);
   return url.toString();
@@ -40,19 +40,19 @@ const corpus = {
   entities: {
     source: {
       options: {
-        source: ["source", "github", "code"],
+        github: ["source", "github", "ui code"],
         addOn: ["add-on", "addon"],
         author: ["author", "creator"],
         lua: ["Lua"],
-        wiki: ["wiki", "api"],
-        esoui: ["ESOUI", "forum"],
+        api: ["api", "wiki"],
+        forum: ["forum", "ESOUI"],
       },
     },
     query: {
       trim: [
         {
           position: "between",
-          leftWords: ["search", "find"],
+          leftWords: ["search", "find", "show"],
           rightWords: ["in"],
         },
         {
@@ -66,18 +66,21 @@ const corpus = {
     {
       intent: "search",
       utterances: [
-        "Search in @source for @query",
-        "Search @query in @source",
+        "I want to search in @source for @query",
+        "I would like to search @query in @source",
         "Find @source with @query",
         "Find @source named @query",
         "Find @source by @query",
         "Find @query in @source",
+        "Show @source by @query",
+        "Show @source with @query",
+        "Get @source with @query",
       ],
       slotFilling: {
         source: {
           mandatory: true,
           question:
-            "Where do you want to search? (Lua documentation, interface source, add-ons, author, ESOUI wiki or ESOUI forums)",
+            "Where do you want to search? (Lua, GitHub, add-on, author, API or forum)",
         },
         query: {
           mandatory: true,
@@ -116,10 +119,10 @@ module.exports = function (nlp) {
         case "lua":
           data.context.url = createLuaSearchUrl(query);
           break;
-        case "wiki":
-          data.context.url = createWikiSearchUrl(query);
+        case "api":
+          data.context.url = createApiSearchUrl(query);
           break;
-        case "source":
+        case "github":
           data.context.url = createGitHubSearchUrl(query);
           break;
         case "addOn":
@@ -128,8 +131,8 @@ module.exports = function (nlp) {
         case "author":
           data.context.url = createAuthorSearchUrl(query);
           break;
-        case "esoui":
-          data.context.url = createEsouiSearchUrl(query);
+        case "forum":
+          data.context.url = createForumSearchUrl(query);
           break;
       }
     }
