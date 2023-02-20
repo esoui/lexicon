@@ -1,7 +1,6 @@
 const minimist = require("minimist");
 const { dockStart } = require("@nlpjs/basic");
 
-const handleTime = require("./features/time.js");
 const handleServerStatus = require("./features/status.js");
 const handleSearch = require("./features/search.js");
 const handleJoke = require("./features/joke.js");
@@ -69,7 +68,6 @@ const connector = getConnector(args);
 
   const nlp = dock.get("nlp");
 
-  handleTime(nlp);
   handleServerStatus(nlp);
   handleSearch(nlp);
   handleJoke(nlp);
