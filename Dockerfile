@@ -1,10 +1,10 @@
+# Matrix encryption package has issues with Alpine.
 FROM node:18
 
 WORKDIR /usr/src/app
 COPY package*.json .
-RUN npm ci --only production
+RUN npm ci --omit dev
 
-ENV NODE_ENV=production
+ENTRYPOINT ["npm", "start", "--"]
 
 COPY . .
-CMD ["npm", "start"]

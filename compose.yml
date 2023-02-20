@@ -4,12 +4,11 @@ services:
     volumes:
       - storage:/usr/src/app/storage
     env_file: .env
-    command:
-      - npm
-      - start
-      - --
-      - -h $HOMESERVER_URL
-      - -t $TOKEN
+    command: |
+      -c matrix
+      -h $HOMESERVER_URL
+      -u $BOT_USERNAME
+      -p $BOT_PASSWORD
 
 volumes:
   storage: null
