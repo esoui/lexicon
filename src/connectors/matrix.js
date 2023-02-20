@@ -64,33 +64,42 @@ class MatrixConnector extends Connector {
     AutojoinRoomsMixin.setupOnClient(matrix);
 
     const handler = async (roomId, event) => {
+      LogService.debug("MatrixConnector", "Event", roomId, event);
+
       const senderId = event.sender;
+
       if (senderId === botId) {
-        LogService.debug("MatrixConnector", "Shouldn't respond to myself");
+        LogService.debug("MatrixConnector", "Skipping my own message");
         return;
       }
 
       const message = new MessageEvent(event);
       if (message.messageType !== "m.text") {
-        LogService.debug("MatrixConnector", "Event is not a text message");
+        LogService.debug("MatrixConnector", "Skipping non text message event");
         return;
       }
 
-      const text = this.settings.extractMessageText(message.textBody);
-      if (!text) {
-        LogService.debug("MatrixConnector", "Message couldn't be extracted");
+      const extractedText = this.settings.extractMessageText(message.textBody);
+      if (!extractedText) {
+        LogService.debug(
+          "MatrixConnector",
+          "Skipping empty or non prefixed message"
+        );
         return;
       }
 
       LogService.info(
         "MatrixConnector",
-        `Message received on ${roomId} from ${senderId}`
+        "Processing message",
+        roomId,
+        senderId,
+        extractedText
       );
 
-      const context = this.getContext(roomId, event);
-      await this.hear(text, context);
+      await this.hear({ extractedText, roomId, event });
     };
     matrix.on("room.message", handler);
+
     matrix.start();
 
     LogService.info(
@@ -103,56 +112,59 @@ class MatrixConnector extends Connector {
   }
 
   async say(...args) {
-    LogService.debug("MatrixConnector", "say(", args, ")");
+    LogService.debug("MatrixConnector", "say()", args);
 
-    let text, context;
+    let text, matrixContext;
     if (typeof args[0] === "string") {
       text = args[0];
-      context = args[1];
+      matrixContext = args[1];
     } else if (typeof args[0] === "object") {
       text = args[0].answer || args[0].value || args[0].text;
-      context = args[0].context || args[1].context || args[1];
-    }
+      matrixContext = args[0].matrixContext || args[1].matrixContext || args[1];
+    } else {
+      LogService.error(
+        "MatrixConnector",
+        "Couldn't understand say() arguments",
+        args
+      );
 
-    if (!text) {
-      LogService.error("MatrixConnector", "Invalid arguments for say()", args);
       return;
     }
 
-    await this.matrixClient.replyNotice(
-      context.matrix.roomId,
-      context.matrix.event,
-      "",
-      text
+    LogService.info("MatrixConnector", "Saying", { text, matrixContext });
+
+    await this.matrixClient.replyHtmlNotice(
+      matrixContext.roomId,
+      matrixContext.event,
+      text || "Sorry, I don't know how to respond to that yet."
     );
   }
 
-  getContext(roomId, event) {
-    const key = roomId + "/" + event.sender;
+  getContext(key) {
     if (!this.contextCache.has(key)) {
-      this.contextCache.set(key, { id: key, matrix: { roomId, event } });
+      LogService.debug("MatrixConnector", "Context cache miss", key);
+      this.contextCache.set(key, {});
     }
-    const context = this.contextCache.get(key);
-    context.matrix.event = event;
-    return context;
+    return this.contextCache.get(key);
   }
 
-  async hear(text, context) {
-    LogService.debug("MatrixConnector", "hear(", text, context, ")");
+  async hear({ extractedText, roomId, event }) {
+    const id = `${roomId}/${event.sender}`;
 
-    const name = `${this.settings.tag}.hear`;
-
-    const pipeline = this.container.getPipeline(name);
+    const pipeline = this.container.getPipeline(`${this.settings.tag}.hear`);
     if (pipeline) {
-      LogService.debug("MatrixConnector", `Running pipeline ${name}`);
+      LogService.debug(
+        "MatrixConnector",
+        `Running pipeline for "${this.settings.tag}"`
+      );
 
       this.container.runPipeline(
         pipeline,
         {
-          message: text,
+          message: extractedText,
           channel: this.settings.tag,
           app: this.container.name,
-          context,
+          matrixContext: { roomId, event },
         },
         this
       );
@@ -166,8 +178,9 @@ class MatrixConnector extends Connector {
 
       const session = this.createSession({
         channelId: this.settings.tag,
-        text,
-        address: { conversation: context },
+        text: extractedText,
+        address: { conversation: { id } },
+        matrixContext: { roomId, event },
       });
       await bot.process(session);
 
@@ -178,20 +191,25 @@ class MatrixConnector extends Connector {
     if (nlp) {
       LogService.debug("MatrixConnector", "Using nlp pipeline");
 
+      const context = this.getContext(id);
       const result = await nlp.process(
         {
-          message: text,
+          message: extractedText,
           channel: this.settings.tag,
           app: this.container.name,
         },
+        undefined,
         context
       );
-      await this.say(result, context);
 
+      await this.say(result, { roomId, event });
       return;
     }
 
-    throw new Error(`There is no pipeline for ${name}`);
+    LogService.error(
+      "MatrixConnector",
+      `No pipeline for "${this.settings.tag}"`
+    );
   }
 }
 
