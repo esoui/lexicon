@@ -94,10 +94,10 @@ const corpus = {
   ],
 };
 
-export default function (nlp) {
+module.exports = function (nlp) {
   nlp.addCorpus(corpus);
 
-  nlp.registerActionFunction("handleSearch", async (data, locale) => {
+  nlp.registerActionFunction("handleSearch", async (data) => {
     const source = data.entities.find(
       ({ entity }) => entity === "source"
     )?.option;
@@ -136,4 +136,4 @@ export default function (nlp) {
 
     return data;
   });
-}
+};

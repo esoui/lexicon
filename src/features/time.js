@@ -20,11 +20,11 @@ const corpus = {
   ],
 };
 
-export default function (nlp) {
+module.exports = function (nlp) {
   nlp.addCorpus(corpus);
 
   nlp.registerActionFunction("handleDateTime", async (data, locale) => {
     data.context.now = new Date().toLocaleString(locale);
     return data;
   });
-}
+};

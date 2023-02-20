@@ -3,17 +3,16 @@
   "name": "lexicon",
   "version": "1.0.0",
   "main": "src/index.js",
-  "type": "module",
   "scripts": {
+    "lint": "eslint .",
     "start": "npm run start:${NODE_ENV:=development} --",
-    "start:production": "node src/index.js --",
+    "start:production": "node src/index.js",
     "start:development": "node-dev --respawn src/index.js --"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/esoui/lexicon.git"
   },
-  "keywords": [],
   "author": "Arthur <arthur@corenzan.com>",
   "license": "MIT",
   "bugs": {
@@ -28,6 +27,24 @@
     "rss-parser": "^3.12.0"
   },
   "devDependencies": {
-    "node-dev": "^8.0.0"
+    "eslint": "^8.34.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "node-dev": "^8.0.0",
+    "prettier": "^2.8.4"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true,
+      "es2022": true
+    },
+    "extends": [
+      "eslint:recommended",
+      "plugin:prettier/recommended"
+    ],
+    "plugins": [
+      "prettier"
+    ]
   }
 }

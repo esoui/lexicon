@@ -41,6 +41,7 @@ const corpus = {
         "What is the game status?",
         "How are the servers?",
         "Is the game down?",
+        "Is the game offline?",
         "Are the servers down?",
       ],
       actions: [
@@ -53,10 +54,10 @@ const corpus = {
   ],
 };
 
-export default function (nlp) {
+module.exports = function (nlp) {
   nlp.addCorpus(corpus);
 
-  nlp.registerActionFunction("handleGameStatus", async (data, locale) => {
+  nlp.registerActionFunction("handleGameStatus", async (data) => {
     try {
       const status = await getGameServerStatus();
       data.context.status = `
@@ -92,4 +93,4 @@ export default function (nlp) {
     }
     return data;
   });
-}
+};

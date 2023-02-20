@@ -1,4 +1,4 @@
-import Parser from "rss-parser";
+const Parser = require("rss-parser");
 
 async function getLatestPosts() {
   const parser = new Parser();
@@ -24,10 +24,10 @@ const corpus = {
   ],
 };
 
-export default function (nlp) {
+module.exports = function (nlp) {
   nlp.addCorpus(corpus);
 
-  nlp.registerActionFunction("handlePatchNotes", async (data, locale) => {
+  nlp.registerActionFunction("handlePatchNotes", async (data) => {
     try {
       const feed = await getLatestPosts();
       data.context.feed = `
@@ -44,4 +44,4 @@ export default function (nlp) {
     }
     return data;
   });
-}
+};

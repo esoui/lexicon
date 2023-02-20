@@ -75,6 +75,6 @@ const corpus = {
   ],
 };
 
-export default function (nlp) {
+module.exports = function (nlp) {
   nlp.addCorpus(corpus);
-}
+};
