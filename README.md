@@ -23,12 +23,14 @@ npm ci
 Then you can run the bot, providing a connector and its configuration:
 
 ```sh
-npm start -- -c matrix -s https://matrix.org -u bot -p thisisnotsecure -x
+npm start -- --connector console
 ```
 
-### Support files
+> 💡 The `console` connector is the easiest one to use if you're just working on bot features.
 
-We provide support files to launch a Matrix and Element instance so you can test drive your bot. You'll need Docker v20+ and Docker Compose plugin installed. Also, make sure ports `8000` and `8008` are available.
+### Local Matrix
+
+We provide support files to launch local Matrix and Element instances so you can test drive your bot. You'll need Docker v20+ and Docker Compose plugin installed. Also, make sure ports `8000` and `8008` are available.
 
 ```sh
 docker compose -f support/compose.yml up
@@ -40,7 +42,7 @@ Head over to <http://localhost:8000>, sign-up and use the credentials with the b
 npm start -- -c matrix -s http://matrix.local.crz.li -u bot -p thisisnotsecure -x
 ```
 
-> ℹ️ We use the hostname `matrix.local.crz.li` (which resolved to `127.0.0.1`) so that both the host machine and the container can see the same thing.
+> ℹ️ We use the hostname `matrix.local.crz.li` because locally it resolves to `127.0.0.1`, but it's also the hostname to one of the containers.
 
 ## Production
 
