@@ -1,6 +1,6 @@
 # Lexicon
 
-Lexicon is a [Matrix](https://matrix.org/) bot based on [NLP.js](https://github.com/axa-group/nlp.js) that hangs in [ESOUI room on Gitter](https://gitter.im/lexicon).
+Lexicon is a bot based on [NLP.js](https://github.com/axa-group/nlp.js) that currently hangs in [ESOUI room on Gitter](https://matrix.to/#/#esoui_esoui:gitter.im).
 
 ## Repository
 
