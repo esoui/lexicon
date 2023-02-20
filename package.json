@@ -8,7 +8,7 @@
     "start": "npm run start:${NODE_ENV:=development} --",
     "start:production": "node src/index.js",
     "start:development": "node-dev --respawn src/index.js --",
-    "prepare": "husky install"
+    "prepare": "husky install || printf '🐺 Husky not available'"
   },
   "repository": {
     "type": "git",
