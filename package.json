@@ -20,6 +20,10 @@
     "url": "https://github.com/esoui/lexicon/issues"
   },
   "homepage": "https://github.com/esoui/lexicon#readme",
+  "engines": {
+    "npm": "^8",
+    "node": "^18"
+  },
   "dependencies": {
     "@nlpjs/basic": "^4.26.1",
     "lru-cache": "^7.14.1",
