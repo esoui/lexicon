@@ -14,6 +14,7 @@ function getConnector(args) {
           homeserverUrl: args.h || process.env.HOMESERVER_URL,
           username: args.u || process.env.BOT_USERNAME,
           password: args.p || process.env.BOT_PASSWORD,
+          accessToken: args.t || process.env.BOT_ACCESS_TOKEN,
           debug: args.x,
           extractMessageText: (message) => {
             if (message.indexOf("lexicon:") === 0) {

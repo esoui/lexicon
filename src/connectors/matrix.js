@@ -35,17 +35,19 @@ class MatrixConnector extends Connector {
 
     LogService.debug("MatrixConnector", "Final settings", this.settings);
 
-    if (!this.settings.accessToken && this.settings.username) {
-      const auth = new MatrixAuth(this.settings.homeserverUrl);
-      const login = await auth.passwordLogin(
-        this.settings.username,
-        this.settings.password
-      );
-      this.settings.accessToken = login.accessToken;
-    } else {
-      throw new Error(
-        "[MatrixConnector] No access token or username/password provided"
-      );
+    if (!this.settings.accessToken) {
+      if (this.settings.username) {
+        const auth = new MatrixAuth(this.settings.homeserverUrl);
+        const login = await auth.passwordLogin(
+          this.settings.username,
+          this.settings.password
+        );
+        this.settings.accessToken = login.accessToken;
+      } else {
+        throw new Error(
+          "[MatrixConnector] No access token or username/password provided"
+        );
+      }
     }
 
     const storage = new SimpleFsStorageProvider(
