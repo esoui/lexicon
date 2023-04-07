@@ -63,6 +63,7 @@ class MatrixConnector extends Connector {
       crypto
     );
     const botId = await matrix.getUserId();
+    const botProfile = await matrix.getUserProfile(botId);
 
     AutojoinRoomsMixin.setupOnClient(matrix);
 
@@ -88,7 +89,10 @@ class MatrixConnector extends Connector {
         return;
       }
 
-      const extractedText = this.settings.extractMessageText(message.textBody);
+      const extractedText = this.settings.extractMessageText(
+        message.textBody,
+        botProfile
+      );
       if (!extractedText) {
         LogService.debug(
           "MatrixConnector",
