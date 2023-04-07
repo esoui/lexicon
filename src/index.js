@@ -16,10 +16,11 @@ function getConnector(args) {
           password: args.p || process.env.BOT_PASSWORD,
           accessToken: args.t || process.env.BOT_ACCESS_TOKEN,
           debug: args.x,
-          extractMessageText: (message) => {
-            if (message.indexOf("lexicon:") === 0) {
-              return message.slice(8).trim();
-            } else if (message.indexOf("lex:") === 0) {
+          extractMessageText: (message, profile) => {
+            let prefix = `${profile.displayname}:`;
+            if (message.indexOf(prefix) === 0) {
+              return message.slice(prefix.length).trim();
+            } else if (message.indexOf(`${prefix.slice(0, 3)}:`) === 0) {
               return message.slice(4).trim();
             }
           },
