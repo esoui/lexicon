@@ -9,7 +9,7 @@ const {
   LogLevel,
   RichConsoleLogger,
 } = require("matrix-bot-sdk");
-const LRUCache = require("lru-cache");
+const { LRUCache } = require("lru-cache");
 const { Connector } = require("@nlpjs/connector");
 const { join } = require("path");
 
@@ -40,27 +40,27 @@ class MatrixConnector extends Connector {
         const auth = new MatrixAuth(this.settings.homeserverUrl);
         const login = await auth.passwordLogin(
           this.settings.username,
-          this.settings.password
+          this.settings.password,
         );
         this.settings.accessToken = login.accessToken;
       } else {
         throw new Error(
-          "[MatrixConnector] No access token or username/password provided"
+          "[MatrixConnector] No access token or username/password provided",
         );
       }
     }
 
     const storage = new SimpleFsStorageProvider(
-      join(this.settings.storage, "bot.json")
+      join(this.settings.storage, "bot.json"),
     );
     const crypto = new RustSdkCryptoStorageProvider(
-      join(this.settings.storage, "sled")
+      join(this.settings.storage, "sled"),
     );
     const matrix = new MatrixClient(
       this.settings.homeserverUrl,
       this.settings.accessToken,
       storage,
-      crypto
+      crypto,
     );
     const botId = await matrix.getUserId();
     const botProfile = await matrix.getUserProfile(botId);
@@ -91,12 +91,12 @@ class MatrixConnector extends Connector {
 
       const extractedText = this.settings.extractMessageText(
         message.textBody,
-        botProfile
+        botProfile,
       );
       if (!extractedText) {
         LogService.debug(
           "MatrixConnector",
-          "Skipping empty or non prefixed message"
+          "Skipping empty or non prefixed message",
         );
         return;
       }
@@ -106,7 +106,7 @@ class MatrixConnector extends Connector {
         "Processing message",
         roomId,
         senderId,
-        extractedText
+        extractedText,
       );
 
       await this.hear({ extractedText, roomId, event });
@@ -117,7 +117,7 @@ class MatrixConnector extends Connector {
 
     LogService.info(
       "MatrixConnector",
-      `Started on ${this.settings.homeserverUrl} as "${this.settings.username}"`
+      `Started on ${this.settings.homeserverUrl} as "${this.settings.username}"`,
     );
 
     this.contextCache = new LRUCache({ max: this.settings.maxContext });
@@ -138,7 +138,7 @@ class MatrixConnector extends Connector {
       LogService.error(
         "MatrixConnector",
         "Couldn't understand say() arguments",
-        args
+        args,
       );
 
       return;
@@ -149,7 +149,7 @@ class MatrixConnector extends Connector {
     await this.matrixClient.replyHtmlNotice(
       matrixContext.roomId,
       matrixContext.event,
-      text || "Sorry, I don't know how to respond to that yet."
+      text || "Sorry, I don't know how to respond to that yet.",
     );
   }
 
@@ -168,7 +168,7 @@ class MatrixConnector extends Connector {
     if (pipeline) {
       LogService.debug(
         "MatrixConnector",
-        `Running pipeline for "${this.settings.tag}"`
+        `Running pipeline for "${this.settings.tag}"`,
       );
 
       this.container.runPipeline(
@@ -179,7 +179,7 @@ class MatrixConnector extends Connector {
           app: this.container.name,
           matrixContext: { roomId, event },
         },
-        this
+        this,
       );
 
       return;
@@ -212,7 +212,7 @@ class MatrixConnector extends Connector {
           app: this.container.name,
         },
         undefined,
-        context
+        context,
       );
 
       await this.say(result, { roomId, event });
@@ -221,7 +221,7 @@ class MatrixConnector extends Connector {
 
     LogService.error(
       "MatrixConnector",
-      `No pipeline for "${this.settings.tag}"`
+      `No pipeline for "${this.settings.tag}"`,
     );
   }
 }
