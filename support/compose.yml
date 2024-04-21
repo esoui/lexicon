@@ -1,9 +1,9 @@
 services:
   synapse:
-    image: matrixdotorg/synapse:v1.75.0
+    image: matrixdotorg/synapse:v1.105.0
     hostname: matrix.local.crz.li
     volumes:
-      - ./synapse/data:/data
+      - data:/data
       - ./synapse/config:/config
     ports:
       - 8008:8008
@@ -12,8 +12,11 @@ services:
       - SYNAPSE_REPORT_STATS=no
       - SYNAPSE_CONFIG_DIR=/config
   element:
-    image: vectorim/element-web:v1.11.19
+    image: vectorim/element-web:v1.11.64
     ports:
       - 8000:80
     volumes:
       - ./elements/config.json:/app/config.json
+
+volumes:
+  data: {}
