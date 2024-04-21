@@ -1,4 +1,12 @@
+# Ignore node packages.
 node_modules
+
+# Ignore local configuration file.
 .env
+
+# Ignore runtime storage.
 /support
 /storage
+
+# Ignore eslint cache.
+.eslintcache

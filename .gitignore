@@ -1,5 +1,16 @@
+# Ignore node packages.
 node_modules
+
+# Ignore local configuration file.
 .env
+
+# Ignore runtime storage.
 /support/synapse/data
 /storage/bot.json
 /storage/sled
+
+# Ignore Compose overrides.
+compose.override.yml
+
+# Ignore eslint cache.
+.eslintcache
