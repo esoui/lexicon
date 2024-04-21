@@ -3,7 +3,7 @@ const Parser = require("rss-parser");
 async function getLatestPosts() {
   const parser = new Parser();
   return await parser.parseURL(
-    "https://forums.elderscrollsonline.com/en/categories/patch-notes/feed.rss"
+    "https://forums.elderscrollsonline.com/en/categories/patch-notes/feed.rss",
   );
 }
 

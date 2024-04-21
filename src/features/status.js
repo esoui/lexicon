@@ -1,6 +1,6 @@
 async function getGameServerStatus() {
   const resp = await fetch(
-    "https://live-services.elderscrollsonline.com/status/realms"
+    "https://live-services.elderscrollsonline.com/status/realms",
   );
   const json = await resp.json();
   if (json.zos_platform_response.result_message !== "success") {

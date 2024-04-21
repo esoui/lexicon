@@ -102,7 +102,7 @@ module.exports = function (nlp) {
 
   nlp.registerActionFunction("handleSearch", async (data) => {
     const source = data.entities.find(
-      ({ entity }) => entity === "source"
+      ({ entity }) => entity === "source",
     )?.option;
     const query = data.entities
       .find(({ entity }) => entity === "query")
