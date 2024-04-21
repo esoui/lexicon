@@ -14,13 +14,9 @@ Here's a brief summary of the most important locations in the repository.
 
 ## Development
 
-You'll need Node.js v18+ and to install the dependencies.
+You'll need Node.js v20+.
 
-```sh
-npm ci
-```
-
-Then you can run the bot, providing a connector and its configuration:
+You can just run the bot, providing a connector and its configuration. It'll automatically install dependencies if needed.
 
 ```sh
 npm start -- --connector console
@@ -36,17 +32,19 @@ We provide support files to launch local Matrix and Element instances so you can
 docker compose -f support/compose.yml up
 ```
 
+> ⚠️ If it fails with a "Permission denied" error, stop the containers and run `docker compose -f support/compose.yml run --rm synapse generate`. It'll fix up the `/data` directory ownership, then you can start the containers again.
+
 Head over to <http://localhost:8000>, sign-up and use the credentials with the bot:
 
 ```sh
-npm start -- -c matrix -s http://matrix.local.crz.li -u bot -p thisisnotsecure -x
+npm start -- -c matrix -h http://matrix.local.crz.li -u bot -p thisisnotsecure -x
 ```
 
-> ℹ️ We use the hostname `matrix.local.crz.li` because locally it resolves to `127.0.0.1`, but it's also the hostname to one of the containers.
+> ℹ️ We use the hostname `matrix.local.crz.li` because it resolves to `127.0.0.1`, and it's also the hostname of the container.
 
-## Production
+## Deployment
 
-You'll need Docker v20+ and Docker Compose plugin installed. Copy `example.env` to `.env` and edit it appropriately. Then launch the bot service in background.
+You'll need Docker v20+ and Docker Compose plugin installed. Clone the repository, then copy `example.env` to `.env` and edit it appropriately. Finally, launch the bot service in background.
 
 ```sh
 docker compose up -d
